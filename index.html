@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIS ReadPrep — 6th Grade Reading Trainer</title>
+<title>NIS ReadPrep — 6th Grade Exam Trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -11,7 +11,6 @@
   :root {
     --primary: #1a3a5c;
     --accent: #e8a020;
-    --accent2: #2ecc8f;
     --bg: #f4f1eb;
     --card: #ffffff;
     --text: #1a1a2e;
@@ -23,96 +22,83 @@
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
   .app { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
 
-  .header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 1.5rem;
-    background: var(--primary);
-    border-radius: 16px;
-    margin-bottom: 1.5rem;
-    color: white;
-  }
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: var(--primary); border-radius: 16px; margin-bottom: 1.5rem; color: white; }
   .logo { display: flex; align-items: center; gap: 12px; }
-  .logo-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-  }
+  .logo-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 20px; }
   .logo-text h1 { font-family: 'Playfair Display', serif; font-size: 18px; }
   .logo-text p { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-  .score-badge {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 14px; font-weight: 500;
-  }
+  .score-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 6px 16px; font-size: 14px; font-weight: 500; }
   .score-badge span { color: var(--accent); font-weight: 600; }
 
-  .tabs {
-    display: flex; gap: 8px; margin-bottom: 1.5rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 6px;
-  }
-  .tab {
-    flex: 1; padding: 10px; border: none; background: transparent;
-    border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500; color: var(--muted); transition: all 0.2s;
-  }
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 6px; }
+  .tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--muted); transition: all 0.2s; }
   .tab.active { background: var(--primary); color: white; }
 
+  /* MODULE SELECTOR */
+  .module-label { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.75rem; }
+  .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.75rem; }
+  .module-card { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 1.25rem 1rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .module-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+  .module-icon { font-size: 30px; margin-bottom: 8px; }
+  .module-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .module-desc { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .module-card.mod-english.active { border-color: #1565c0; background: #e8f4fd; }
+  .module-card.mod-english.active .module-name { color: #1565c0; }
+  .module-card.mod-kazakh.active { border-color: #2e7d32; background: #e8f5e9; }
+  .module-card.mod-kazakh.active .module-name { color: #2e7d32; }
+  .module-card.mod-math.active { border-color: #6a1b9a; background: #f3e5f5; }
+  .module-card.mod-math.active .module-name { color: #6a1b9a; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.75rem; }
+
+  /* PASSAGE GRID */
+  .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .passage-thumb { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .passage-thumb::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 14px 14px 0 0; }
+  .passage-thumb.genre-nonfiction::before { background: #1565c0; }
+  .passage-thumb.genre-fiction::before { background: #9c27b0; }
+  .passage-thumb.genre-kazakh::before { background: #2e7d32; }
+  .passage-thumb.genre-math::before { background: #6a1b9a; }
+  .passage-thumb:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .thumb-title { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--primary); margin: 0.5rem 0; line-height: 1.3; }
+  .thumb-preview { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .thumb-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+  .thumb-stats { font-size: 12px; color: var(--muted); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); display: inline-block; margin-right: 4px; }
+  .status-dot.done { background: var(--success); }
+
   .badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .badge-genre { background: #e8f4fd; color: #1565c0; }
+  .badge-en { background: #e8f4fd; color: #1565c0; }
+  .badge-kz { background: #e8f5e9; color: #2e7d32; }
+  .badge-ma { background: #f3e5f5; color: #6a1b9a; }
   .badge-level { background: #fff3cd; color: #b8860b; }
 
+  /* PRACTICE */
+  .practice-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
   .passage-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
   .passage-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
-
   .timer-ring { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .timer-display { font-size: 22px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
   .timer-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
   .timer-display.warning { color: var(--danger); }
-
   .passage-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 1rem; line-height: 1.3; }
-  .passage-body {
-    background: var(--bg); border-left: 4px solid var(--accent);
-    padding: 1rem 1.25rem; border-radius: 0 8px 8px 0;
-    font-size: 15px; line-height: 1.8; color: var(--text);
-    margin-bottom: 1.5rem; max-height: 260px; overflow-y: auto;
-  }
-
+  .passage-body { background: var(--bg); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; font-size: 15px; line-height: 1.8; color: var(--text); margin-bottom: 1.5rem; max-height: 260px; overflow-y: auto; }
   .questions-section h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 1rem; }
   .question-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
   .question-text { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 0.75rem; line-height: 1.5; }
   .options { display: flex; flex-direction: column; gap: 8px; }
-  .option {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px; border: 1.5px solid var(--border);
-    border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 400; color: var(--text);
-    transition: all 0.15s; background: white; text-align: left; width: 100%;
-  }
+  .option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); transition: all 0.15s; background: white; text-align: left; width: 100%; }
   .option:hover { border-color: var(--primary); background: #f0f4ff; }
   .option.selected { border-color: var(--primary); background: #eef1ff; }
   .option.correct { border-color: var(--success); background: #e8f9f1; color: #155724; }
   .option.incorrect { border-color: var(--danger); background: #fdecea; color: #7b1a1a; }
   .option.reveal-correct { border-color: var(--success); background: #e8f9f1; }
-  .option-letter {
-    width: 24px; height: 24px; border-radius: 6px; background: var(--bg);
-    border: 1px solid var(--border); display: flex; align-items: center;
-    justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; color: var(--muted);
-  }
+  .option-letter { width: 24px; height: 24px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; color: var(--muted); }
   .option.selected .option-letter { background: var(--primary); color: white; border-color: var(--primary); }
   .option.correct .option-letter { background: var(--success); color: white; border-color: var(--success); }
   .option.incorrect .option-letter { background: var(--danger); color: white; border-color: var(--danger); }
   .option.reveal-correct .option-letter { background: var(--success); color: white; border-color: var(--success); }
-  .explanation {
-    margin-top: 10px; padding: 10px 12px; background: #f0fdf4;
-    border-left: 3px solid var(--success); border-radius: 0 6px 6px 0;
-    font-size: 13px; color: #1a4731; line-height: 1.6; display: none;
-  }
+  .explanation { margin-top: 10px; padding: 10px 12px; background: #f0fdf4; border-left: 3px solid var(--success); border-radius: 0 6px 6px 0; font-size: 13px; color: #1a4731; line-height: 1.6; display: none; }
   .explanation.show { display: block; }
 
   .controls { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.5rem; flex-wrap: wrap; }
@@ -122,26 +108,6 @@
   .btn-primary { background: var(--primary); color: white; }
   .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-  .home-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-  .passage-thumb {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.25rem; cursor: pointer;
-    transition: all 0.2s; position: relative; overflow: hidden;
-  }
-  .passage-thumb::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 14px 14px 0 0; }
-  .passage-thumb.genre-nonfiction::before { background: #1565c0; }
-  .passage-thumb.genre-fiction::before { background: #9c27b0; }
-  .passage-thumb.genre-poetry::before { background: #e91e63; }
-  .passage-thumb:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
-  .thumb-title { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--primary); margin: 0.5rem 0; line-height: 1.3; }
-  .thumb-preview { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .thumb-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
-  .thumb-stats { font-size: 12px; color: var(--muted); }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); display: inline-block; margin-right: 4px; }
-  .status-dot.done { background: var(--success); }
-
-  .practice-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
 
   .results-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 2rem; text-align: center; }
   .score-circle { width: 100px; height: 100px; border-radius: 50%; background: var(--primary); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
@@ -156,11 +122,8 @@
 
   .progress-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
   .progress-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; }
-  .progress-score { font-size: 24px; font-weight: 700; color: var(--primary); }
-  .progress-name { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .progress-bar-wrap { background: var(--bg); border-radius: 4px; height: 6px; margin-top: 8px; overflow: hidden; }
   .progress-bar-fill { height: 100%; border-radius: 4px; }
-
   .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
   .empty-icon { font-size: 40px; margin-bottom: 1rem; }
 
@@ -169,19 +132,21 @@
 
   @media (max-width: 600px) {
     .header { flex-direction: column; gap: 12px; text-align: center; }
-    .stats-row { gap: 1rem; }
+    .module-grid { grid-template-columns: 1fr; }
     .home-grid { grid-template-columns: 1fr; }
+    .stats-row { gap: 1rem; }
   }
 </style>
 </head>
 <body>
 <div class="app">
+
   <div class="header">
     <div class="logo">
       <div class="logo-icon">📖</div>
       <div class="logo-text">
         <h1>NIS ReadPrep</h1>
-        <p>6th Grade Reading Exam Trainer</p>
+        <p>6th Grade Exam Trainer</p>
       </div>
     </div>
     <div class="score-badge">Total Score: <span id="total-score">0</span> pts</div>
@@ -192,12 +157,29 @@
     <button class="tab" onclick="showTab('progress')">My Progress</button>
   </div>
 
-  <!-- HOME -->
   <div id="screen-home" class="screen active">
+    <div class="module-label">Choose a subject</div>
+    <div class="module-grid">
+      <div class="module-card mod-english active" onclick="selectModule('english')">
+        <div class="module-icon">🇬🇧</div>
+        <div class="module-name">English</div>
+        <div class="module-desc">Reading comprehension</div>
+      </div>
+      <div class="module-card mod-kazakh" onclick="selectModule('kazakh')">
+        <div class="module-icon">🇰🇿</div>
+        <div class="module-name">Kazakh</div>
+        <div class="module-desc">Оқылым тапсырмалары</div>
+      </div>
+      <div class="module-card mod-math" onclick="selectModule('math')">
+        <div class="module-icon">🔢</div>
+        <div class="module-name">Math</div>
+        <div class="module-desc">Problem solving</div>
+      </div>
+    </div>
+    <div class="section-title" id="section-title">English passages</div>
     <div class="home-grid" id="passage-grid"></div>
   </div>
 
-  <!-- PRACTICE -->
   <div id="screen-practice" class="screen">
     <div class="practice-wrap">
       <div class="passage-header">
@@ -212,7 +194,7 @@
       </div>
       <div class="passage-body" id="passage-body"></div>
       <div class="questions-section">
-        <h3>Comprehension Questions</h3>
+        <h3>Questions</h3>
         <div id="questions-container"></div>
       </div>
       <div class="controls">
@@ -222,14 +204,13 @@
     </div>
   </div>
 
-  <!-- RESULTS -->
   <div id="screen-results" class="screen">
     <div class="results-card">
       <div class="score-circle">
         <div class="score-num" id="res-score">0</div>
         <div class="score-denom" id="res-total">/5</div>
       </div>
-      <div class="results-label" id="res-label">Great Work!</div>
+      <div class="results-label" id="res-label"></div>
       <div class="results-msg" id="res-msg"></div>
       <div class="stats-row">
         <div class="stat-item"><div class="stat-value" id="res-time">—</div><div class="stat-label">Time used</div></div>
@@ -243,197 +224,249 @@
     </div>
   </div>
 
-  <!-- PROGRESS -->
   <div id="screen-progress" class="screen">
     <div id="progress-container"></div>
   </div>
-</div>
 
+</div>
 <script>
-const PASSAGES = [
-  {
-    id: 1,
-    title: "The Silk Road: Bridge Between Civilizations",
-    genre: "Nonfiction", level: "Medium", time: 480,
-    text: `The Silk Road was not a single road but a vast network of trade routes stretching over 6,400 kilometers from China to the Mediterranean Sea. For more than a thousand years, from roughly 130 BCE to 1453 CE, merchants, monks, soldiers, and diplomats crossed deserts, mountains, and steppes to exchange goods and ideas.\n\nSilk was the most famous commodity traded, giving the network its modern name — coined by the German geographer Ferdinand von Richthofen in 1877. Yet silk was far from the only thing exchanged. Spices, glassware, textiles, metals, and precious stones flowed westward and eastward. Equally important was the exchange of knowledge: mathematics, astronomy, medicine, and art traveled with the caravans.\n\nThe road also carried religion. Buddhism spread from India into Central Asia and China. Islam traveled to Southeast Asia. The Black Death, historians believe, also moved westward along the Silk Road in the 14th century, devastating populations across Eurasia.\n\nThe rise of ocean trade routes in the 15th century, pioneered by Portuguese and Spanish explorers, gradually reduced reliance on overland routes. Yet the Silk Road's legacy lives on in the diverse cultures, languages, and ideas that it wove together across continents.`,
-    questions: [
-      { q: "What does the passage say the Silk Road was?", opts: ["A single paved road in China","A network of trade routes across many regions","A sea route between India and Rome","A road built by Ferdinand von Richthofen"], ans: 1, exp: "The passage states clearly that the Silk Road was 'not a single road but a vast network of trade routes.'" },
-      { q: "Who gave the Silk Road its modern name?", opts: ["A Chinese emperor","A Portuguese explorer","Ferdinand von Richthofen","Marco Polo"], ans: 2, exp: "The passage says the name was coined by 'the German geographer Ferdinand von Richthofen in 1877.'" },
-      { q: "What was also transmitted along the Silk Road, besides goods?", opts: ["Only languages","Military weapons and armies","Religion, knowledge, and disease","Postal mail and maps"], ans: 2, exp: "The passage mentions that knowledge, religion, and the Black Death all traveled along the Silk Road." },
-      { q: "Why did the Silk Road decline?", opts: ["China banned all trade","Wars destroyed the routes","Ocean trade routes became more popular","Silk became worthless"], ans: 2, exp: "The passage states that 'the rise of ocean trade routes in the 15th century gradually reduced reliance on overland routes.'" },
-      { q: "What is the main idea of this passage?", opts: ["Silk was the only important product traded","The Silk Road was a powerful connector of civilizations","Portuguese explorers invented global trade","The Black Death started in China"], ans: 1, exp: "The passage covers the Silk Road's geography, products, cultural exchange, and legacy — all pointing to its role as a bridge between civilizations." }
+const MODULES = {
+  english: {
+    label: 'English passages',
+    passages: [
+      { id:'en1', module:'english', title:"The Silk Road: Bridge Between Civilizations", genre:"Nonfiction", level:"Medium", time:480,
+        text:`The Silk Road was not a single road but a vast network of trade routes stretching over 6,400 kilometers from China to the Mediterranean Sea. For more than a thousand years, from roughly 130 BCE to 1453 CE, merchants, monks, soldiers, and diplomats crossed deserts, mountains, and steppes to exchange goods and ideas.\n\nSilk was the most famous commodity traded, giving the network its modern name — coined by the German geographer Ferdinand von Richthofen in 1877. Yet silk was far from the only thing exchanged. Spices, glassware, textiles, metals, and precious stones flowed westward and eastward. Equally important was the exchange of knowledge: mathematics, astronomy, medicine, and art traveled with the caravans.\n\nThe road also carried religion. Buddhism spread from India into Central Asia and China. Islam traveled to Southeast Asia. The Black Death, historians believe, also moved westward along the Silk Road in the 14th century, devastating populations across Eurasia.\n\nThe rise of ocean trade routes in the 15th century, pioneered by Portuguese and Spanish explorers, gradually reduced reliance on overland routes. Yet the Silk Road's legacy lives on in the diverse cultures, languages, and ideas that it wove together across continents.`,
+        questions:[
+          {q:"What does the passage say the Silk Road was?",opts:["A single paved road in China","A network of trade routes across many regions","A sea route between India and Rome","A road built by Ferdinand von Richthofen"],ans:1,exp:"The passage states the Silk Road was 'not a single road but a vast network of trade routes.'"},
+          {q:"Who gave the Silk Road its modern name?",opts:["A Chinese emperor","A Portuguese explorer","Ferdinand von Richthofen","Marco Polo"],ans:2,exp:"The name was coined by 'the German geographer Ferdinand von Richthofen in 1877.'"},
+          {q:"What was also transmitted along the Silk Road, besides goods?",opts:["Only languages","Military weapons","Religion, knowledge, and disease","Postal mail and maps"],ans:2,exp:"Knowledge, religion, and the Black Death all traveled along the Silk Road."},
+          {q:"Why did the Silk Road decline?",opts:["China banned all trade","Wars destroyed the routes","Ocean trade routes became more popular","Silk became worthless"],ans:2,exp:"The rise of ocean trade routes in the 15th century reduced reliance on overland routes."},
+          {q:"What is the main idea of this passage?",opts:["Silk was the only important product","The Silk Road connected civilizations","Portuguese explorers invented global trade","The Black Death started in China"],ans:1,exp:"The passage covers the Silk Road's role as a bridge between civilizations."}
+        ]
+      },
+      { id:'en2', module:'english', title:"The Last Migration", genre:"Fiction", level:"Medium", time:480,
+        text:`The cranes arrived every October, and Aibek had not missed a single gathering in twelve years. He would wake before sunrise, pull on his grandfather's old coat, and walk to the edge of the frozen lake before the birds came. His grandmother said the cranes carried messages from people who had passed on — a story he no longer believed but couldn't quite shake.\n\nThis October felt different. The sky carried a gray weight that made the light feel borrowed. Aibek sat on the cracked bank and waited. He counted his breaths the way his teacher had shown him: in for four, hold for four, out for four. A habit for worry.\n\nBy mid-morning, a faint V formation appeared above the southern ridge. Then another. The calls of the cranes — a deep, bugling cry — spread across the valley before the birds themselves arrived. They landed in waves, hundreds of gray-white bodies settling onto the ice with surprising grace.\n\nAibek exhaled. He didn't know what message, if any, the cranes carried. But watching them fold their wings and tuck their long necks, he understood something his grandmother had perhaps meant all along: that some things return. That the world, in its patient way, keeps its promises.`,
+        questions:[
+          {q:"How many years had Aibek watched the cranes arrive?",opts:["Six","Twelve","Fifteen","Twenty"],ans:1,exp:"The passage states: 'Aibek had not missed a single gathering in twelve years.'"},
+          {q:"What did Aibek's grandmother say the cranes carried?",opts:["Good luck","Seeds from distant lands","Messages from people who had passed on","Warning of winter storms"],ans:2,exp:"His grandmother said 'the cranes carried messages from people who had passed on.'"},
+          {q:"Why did Aibek count his breaths?",opts:["It was a morning exercise","It was a habit for worry","He was timing the cranes","He was counting birds"],ans:1,exp:"Counting breaths was 'a habit for worry,' something his teacher had shown him."},
+          {q:"What does 'the sky carried a gray weight that made the light feel borrowed' suggest?",opts:["It was a bright day","There was a heavy, somber mood","The weather was perfect","Rain was about to fall"],ans:1,exp:"The phrase suggests a heavy, unusual atmosphere — setting an emotionally weighty mood."},
+          {q:"What does Aibek realize at the end?",opts:["He should stop visiting the lake","The cranes carried letters","Some things faithfully keep returning","He believes no childhood stories"],ans:2,exp:"Aibek understands 'that some things return. That the world, in its patient way, keeps its promises.'"}
+        ]
+      },
+      { id:'en3', module:'english', title:"How Trees Talk to Each Other", genre:"Nonfiction", level:"Easy", time:420,
+        text:`For centuries, forests appeared silent and still. We now know they are anything but. Trees communicate with each other through a complex underground network of fungi — a system scientists have nicknamed the "Wood Wide Web."\n\nFungal threads called mycorrhizae wrap around tree roots and extend deep into the soil, connecting trees that may be dozens of meters apart. Through this network, trees share nutrients, particularly carbon and phosphorus. A large "mother tree" — often the oldest in a forest — can send sugars to younger, shaded trees that cannot produce enough food through photosynthesis alone.\n\nTrees also warn each other of danger. When an aphid attacks a willow tree, the tree releases chemical signals into the air. Neighboring willows detect these signals and begin producing defensive chemicals before the aphids arrive.\n\nScientists like Suzanne Simard, a Canadian forest ecologist, have spent decades documenting these relationships. Her research showed that when a mother tree is removed from a forest, the surrounding trees often struggle or die — revealing just how deeply interconnected forest life truly is.\n\nThe discovery challenges the idea of nature as a place of purely selfish competition. Forests, it turns out, cooperate as much as they compete.`,
+        questions:[
+          {q:"What is the 'Wood Wide Web'?",opts:["A website about forests","A network of fungi connecting tree roots","A type of spider web","A government database"],ans:1,exp:"Scientists nicknamed the underground fungal network the 'Wood Wide Web.'"},
+          {q:"What does a 'mother tree' do?",opts:["Produces all oxygen","Stores water underground","Sends nutrients to younger trees","Warns birds of predators"],ans:2,exp:"A mother tree sends sugars to younger, shaded trees that cannot produce enough food."},
+          {q:"How do willow trees warn neighbors?",opts:["By dropping leaves","By changing color","By releasing chemical signals into the air","By sending root signals"],ans:2,exp:"Willow trees release chemical signals into the air which neighboring trees detect."},
+          {q:"What happened when a mother tree was removed?",opts:["New trees grew faster","Surrounding trees struggled or died","Animals left","Fungi disappeared"],ans:1,exp:"Simard's research showed surrounding trees often struggle or die when a mother tree is removed."},
+          {q:"What idea does this passage challenge?",opts:["That trees need sunlight","That fungi harm plants","That nature is purely competitive","That forests are silent"],ans:2,exp:"The discovery challenges the idea that nature is a place of purely selfish competition."}
+        ]
+      }
     ]
   },
-  {
-    id: 2,
-    title: "The Last Migration",
-    genre: "Fiction", level: "Medium", time: 480,
-    text: `The cranes arrived every October, and Aibek had not missed a single gathering in twelve years. He would wake before sunrise, pull on his grandfather's old coat, and walk to the edge of the frozen lake before the birds came. His grandmother said the cranes carried messages from people who had passed on — a story he no longer believed but couldn't quite shake.\n\nThis October felt different. The sky carried a gray weight that made the light feel borrowed. Aibek sat on the cracked bank and waited. He counted his breaths the way his teacher had shown him: in for four, hold for four, out for four. A habit for worry.\n\nBy mid-morning, a faint V formation appeared above the southern ridge. Then another. The calls of the cranes — a deep, bugling cry — spread across the valley before the birds themselves arrived. They landed in waves, hundreds of gray-white bodies settling onto the ice with surprising grace.\n\nAibek exhaled. He didn't know what message, if any, the cranes carried. But watching them fold their wings and tuck their long necks, he understood something his grandmother had perhaps meant all along: that some things return. That the world, in its patient way, keeps its promises.`,
-    questions: [
-      { q: "How many years had Aibek watched the cranes arrive?", opts: ["Six","Twelve","Fifteen","Twenty"], ans: 1, exp: "The passage states: 'Aibek had not missed a single gathering in twelve years.'" },
-      { q: "What did Aibek's grandmother say the cranes carried?", opts: ["Good luck and fortune","Seeds from distant lands","Messages from people who had passed on","Warning of winter storms"], ans: 2, exp: "His grandmother said 'the cranes carried messages from people who had passed on.'" },
-      { q: "Why did Aibek count his breaths?", opts: ["It was a morning exercise","It was a habit for when he felt worried","He was timing how long the cranes took to land","He was counting the birds"], ans: 1, exp: "The passage says counting breaths was 'a habit for worry,' something his teacher had shown him." },
-      { q: "What does 'the sky carried a gray weight that made the light feel borrowed' suggest?", opts: ["It was a bright, sunny day","There was a heavy, somber mood","The weather was perfect for bird watching","Rain was about to fall"], ans: 1, exp: "The phrase is figurative, suggesting a heavy, unusual atmosphere — setting an emotionally weighty mood." },
-      { q: "What does Aibek realize by the end of the passage?", opts: ["He should stop visiting the lake","The cranes were carrying letters from his grandmother","Some things in the world are faithful and keep returning","He no longer believes any stories from his childhood"], ans: 2, exp: "Aibek understands 'that some things return. That the world, in its patient way, keeps its promises.'" }
+  kazakh: {
+    label: 'Қазақша мәтіндер',
+    passages: [
+      { id:'kz1', module:'kazakh', title:"Ұлы дала — тарих бесігі", genre:"Қазақша", level:"Medium", time:480,
+        text:`Қазақстан жері — ежелден адамзат тарихының куәсі болған өлке. Ұлы дала деп аталатын бұл кең байтақ жер — Орта Азия мен Шығыс Еуропаны жалғастырып жатқан ұлан-ғайыр кеңістік.\n\nДала тарихы мыңдаған жылдарға созылады. Осыдан үш мың жыл бұрын бұл жерлерде сақ тайпалары өмір сүрді. Олар батыл жауынгерлер де, шебер зергерлер де болды. Сақтар алтыннан жасалған бұйымдарымен Еуразия халықтарының назарын аударды.\n\nКейін, орта ғасырларда, Қазақ хандығы құрылды. 1465 жылы Керей мен Жәнібек хандар бастаған қазақ рулары өз мемлекетін жариялады. Осы кезден бастап қазақ халқы тарих сахнасына өз алдына дербес ел ретінде шықты.\n\nДала тек соғыс пен күрестен ғана емес, поэзия мен өнерден де нәр алды. Абай Құнанбайұлы, Жамбыл Жабаев сияқты ұлы ақындар халықтың рухани байлығын өлең жолдарына сіңірді. Олардың шығармалары бүгінгі күнге дейін оқылып, жатталып жүр.\n\nҰлы дала — тек өткен тарих емес. Ол бүгінгі ұрпақтың мақтанышы, болашаққа деген сенімі.`,
+        questions:[
+          {q:"Сақ тайпалары қай кезде өмір сүрді?",opts:["Бес мың жыл бұрын","Үш мың жыл бұрын","Мың жыл бұрын","Екі жүз жыл бұрын"],ans:1,exp:"Мәтінде 'осыдан үш мың жыл бұрын бұл жерлерде сақ тайпалары өмір сүрді' деп жазылған."},
+          {q:"Қазақ хандығы қай жылы құрылды?",opts:["1265 жылы","1365 жылы","1465 жылы","1565 жылы"],ans:2,exp:"Мәтінде '1465 жылы Керей мен Жәнібек хандар бастаған қазақ рулары өз мемлекетін жариялады' деп айтылады."},
+          {q:"Сақтар неімен танымал болды?",opts:["Сауда жолдарымен","Алтыннан жасалған бұйымдарымен","Теңіз кемелерімен","Тас мүсіндерімен"],ans:1,exp:"Мәтінде 'сақтар алтыннан жасалған бұйымдарымен Еуразия халықтарының назарын аударды' деп жазылған."},
+          {q:"Абай Құнанбайұлы кім болды?",opts:["Хан","Жауынгер","Ұлы ақын","Зерттеуші"],ans:2,exp:"Мәтінде Абай 'ұлы ақын' ретінде аталады, ол халықтың рухани байлығын өлең жолдарына сіңірді."},
+          {q:"Мәтіннің негізгі идеясы қандай?",opts:["Сақтар ең күшті халық болды","Ұлы дала — тарих пен мақтаныштың бесігі","Қазақ хандығы ұзақ соғыс жүргізді","Абай ең үздік ақын"],ans:1,exp:"Мәтін Ұлы даланы тарих, өнер және бүгінгі ұрпақтың мақтанышы ретінде суреттейді."}
+        ]
+      },
+      { id:'kz2', module:'kazakh', title:"Күздің хаты", genre:"Қазақша", level:"Easy", time:420,
+        text:`Күз келді. Орман сап-сары, қып-қызыл жапырақтарға оранды. Жел ескен сайын жапырақтар биіктен жерге қарай еркін ұшып түседі — тіпті олар ұшқан құстай сезіледі.\n\nАсан мектептен оралып, бақшаға кірді. Ол жерде әжесі отырып, жүн иіріп жатқан. Асан жанына барып отырды.\n\n— Әже, неге күз мұнша сұлу? — деп сұрады ол.\n\n— Балам, — деді әжесі жымиып, — күз — табиғаттың соңғы суреті. Жаз бойы еңбек еткен өсімдіктер, ағаштар бір рет сәнденіп алады. Олар мұны сыйлыққа береді бізге, қысқа кетпес бұрын.\n\nАсан ойланып қалды. Шынымен де, күздің суреті — ең айшықты, ең бай сурет сияқты. Ол жапырақтың бірін алып, алақанына салды. Сарғыш жапырақ — сәл де болса, жазды еске салатын соңғы белгі.\n\nКешке ата-анасымен бірге дастарқан басына отырып, Асан бүгінгі күзгі сабақты естен шығармайтынын білді.`,
+        questions:[
+          {q:"Асан мектептен келген соң қайда барды?",opts:["Үйге кірді","Бақшаға кірді","Орманға жүгірді","Досына барды"],ans:1,exp:"Мәтінде 'Асан мектептен оралып, бақшаға кірді' деп жазылған."},
+          {q:"Әжесі не істеп отырған?",opts:["Кітап оқып отырған","Жүн иіріп отырған","Тамақ пісіріп отырған","Бақ суарып отырған"],ans:1,exp:"Мәтінде 'әжесі отырып, жүн иіріп жатқан' деп айтылады."},
+          {q:"Әжесінің айтуынша, неліктен күз сұлу?",opts:["Жаңбыр жауады","Мектеп бітеді","Өсімдіктер қысқа кетпес бұрын сәнденіп алады","Аспан тазарады"],ans:2,exp:"Әжесі: 'өсімдіктер, ағаштар бір рет сәнденіп алады, оны сыйлыққа береді бізге, қысқа кетпес бұрын' деді."},
+          {q:"Асан жапырақты алған кезде не туралы ойлады?",opts:["Жапырақты суретке салмақ болды","Жапырақты жаздың соңғы белгісі деп санады","Жапырақты мұғалімге апармақ болды","Жапырақпен ойнамақ болды"],ans:1,exp:"Мәтінде 'сарғыш жапырақ — жазды еске салатын соңғы белгі' деп сипатталады."},
+          {q:"Мәтіннің басты ойы қандай?",opts:["Күз — жылдың ең суық мезгілі","Табиғат сұлулығын байқап, бағалай білу керек","Асан мектепті жақсы оқыды","Әжелер барлығын біледі"],ans:1,exp:"Мәтін Асанның күз арқылы табиғаттың сұлулығы мен мәнін ұғынуын баяндайды."}
+        ]
+      }
     ]
   },
-  {
-    id: 3,
-    title: "How Trees Talk to Each Other",
-    genre: "Nonfiction", level: "Easy", time: 420,
-    text: `For centuries, forests appeared silent and still. We now know they are anything but. Trees communicate with each other through a complex underground network of fungi — a system scientists have nicknamed the "Wood Wide Web."\n\nFungal threads called mycorrhizae wrap around tree roots and extend deep into the soil, connecting trees that may be dozens of meters apart. Through this network, trees share nutrients, particularly carbon and phosphorus. A large "mother tree" — often the oldest in a forest — can send sugars to younger, shaded trees that cannot produce enough food through photosynthesis alone.\n\nTrees also warn each other of danger. When an aphid attacks a willow tree, the tree releases chemical signals into the air. Neighboring willows detect these signals and begin producing defensive chemicals before the aphids arrive.\n\nScientists like Suzanne Simard, a Canadian forest ecologist, have spent decades documenting these relationships. Her research showed that when a mother tree is removed from a forest, the surrounding trees often struggle or die — revealing just how deeply interconnected forest life truly is.\n\nThe discovery challenges the idea of nature as a place of purely selfish competition. Forests, it turns out, cooperate as much as they compete.`,
-    questions: [
-      { q: "What is the 'Wood Wide Web'?", opts: ["A website about forest conservation","A network of fungi connecting tree roots underground","A type of spider web found in forests","A government database of tree species"], ans: 1, exp: "The passage says scientists nicknamed the underground fungal network the 'Wood Wide Web.'" },
-      { q: "What does a 'mother tree' do in a forest?", opts: ["Produces all the oxygen for surrounding trees","Stores water underground for dry seasons","Sends nutrients to younger shaded trees","Warns birds of approaching predators"], ans: 2, exp: "A mother tree 'can send sugars to younger, shaded trees that cannot produce enough food through photosynthesis alone.'" },
-      { q: "How do willow trees warn their neighbors?", opts: ["By dropping their leaves","By changing color","By releasing chemical signals into the air","By sending signals through their roots"], ans: 2, exp: "Willow trees 'release chemical signals into the air,' which neighboring trees detect." },
-      { q: "What happened when a mother tree was removed from the forest?", opts: ["New trees grew faster","Surrounding trees often struggled or died","Animals left the area","Fungi disappeared from the soil"], ans: 1, exp: "Simard's research showed that 'when a mother tree is removed, surrounding trees often struggle or die.'" },
-      { q: "What idea does this passage challenge?", opts: ["That trees need sunlight to grow","That fungi are harmful to plant life","That nature is based only on selfish competition","That forests are silent environments"], ans: 2, exp: "The discovery 'challenges the idea of nature as a place of purely selfish competition' — forests cooperate too." }
+  math: {
+    label: 'Math problems',
+    passages: [
+      { id:'ma1', module:'math', title:"Fractions & Ratios", genre:"Math", level:"Medium", time:480,
+        text:`Read each problem carefully and choose the correct answer.\n\nProblem 1: A baker uses 3/4 of a bag of flour to make bread. If he has 8 bags, how many bags of flour does he use in total?\n\nProblem 2: In a class of 30 students, 12 play football and 18 play basketball. What is the ratio of football players to the total number of students?\n\nProblem 3: Assel has 240 tenge. She spends 1/3 on lunch and 1/4 on a notebook. How much money does she have left?\n\nProblem 4: A train travels at 80 km/h. How far does it travel in 2 hours and 30 minutes?\n\nProblem 5: A rectangle has a length of 12 cm and a width of 7 cm. What is its perimeter?`,
+        questions:[
+          {q:"The baker uses 3/4 of a bag per batch. With 8 bags, how many does he use?",opts:["5 bags","6 bags","7 bags","8 bags"],ans:1,exp:"3/4 × 8 = 6 bags."},
+          {q:"What is the ratio of football players (12) to total students (30)?",opts:["2:5","1:3","3:5","2:3"],ans:0,exp:"12:30 simplifies to 2:5 (divide both by 6)."},
+          {q:"Assel has 240 tenge, spends 1/3 on lunch and 1/4 on a notebook. How much is left?",opts:["100 tenge","110 tenge","120 tenge","140 tenge"],ans:0,exp:"1/3 of 240 = 80. 1/4 of 240 = 60. Spent = 140. Left = 240 − 140 = 100 tenge."},
+          {q:"A train at 80 km/h travels for 2.5 hours. What distance?",opts:["160 km","180 km","200 km","220 km"],ans:2,exp:"80 × 2.5 = 200 km."},
+          {q:"Rectangle: 12 cm long, 7 cm wide. What is the perimeter?",opts:["38 cm","84 cm","19 cm","42 cm"],ans:0,exp:"Perimeter = 2 × (12 + 7) = 2 × 19 = 38 cm."}
+        ]
+      },
+      { id:'ma2', module:'math', title:"Percentages & Word Problems", genre:"Math", level:"Hard", time:540,
+        text:`Read each problem carefully and choose the correct answer.\n\nProblem 1: A jacket costs 4,000 tenge. It is on sale for 25% off. What is the sale price?\n\nProblem 2: A school has 500 students. 60% of them are girls. How many boys are there?\n\nProblem 3: Daniyar scored 18 out of 24 on a test. What percentage did he score?\n\nProblem 4: A shop buys a book for 600 tenge and sells it for 750 tenge. What is the percentage profit?\n\nProblem 5: If 35% of a number is 70, what is the number?`,
+        questions:[
+          {q:"A jacket costs 4,000 tenge with 25% off. What is the sale price?",opts:["2,500 tenge","3,000 tenge","3,500 tenge","1,000 tenge"],ans:1,exp:"25% of 4,000 = 1,000. Sale price = 4,000 − 1,000 = 3,000 tenge."},
+          {q:"500 students, 60% are girls. How many boys?",opts:["300","250","200","150"],ans:2,exp:"Girls = 300. Boys = 500 − 300 = 200."},
+          {q:"Daniyar scored 18 out of 24. What percentage?",opts:["70%","72%","75%","80%"],ans:2,exp:"18 ÷ 24 × 100 = 75%."},
+          {q:"Book bought for 600, sold for 750 tenge. Profit percentage?",opts:["20%","25%","15%","30%"],ans:1,exp:"Profit = 150. Percentage = 150 ÷ 600 × 100 = 25%."},
+          {q:"35% of a number is 70. What is the number?",opts:["150","175","200","220"],ans:2,exp:"Number = 70 ÷ 0.35 = 200."}
+        ]
+      }
     ]
   }
-];
+};
 
-let state = { currentPassage: null, answers: {}, timerInterval: null, secondsLeft: 0, startTime: 0, submitted: false, scores: {}, totalPoints: 0 };
+let state = { currentModule:'english', currentPassage:null, answers:{}, timerInterval:null, secondsLeft:0, startTime:0, submitted:false, scores:{}, totalPoints:0 };
+
+function selectModule(mod) {
+  state.currentModule = mod;
+  document.querySelectorAll('.module-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.mod-'+mod).classList.add('active');
+  const labels = {english:'English passages', kazakh:'Қазақша мәтіндер', math:'Math problems'};
+  document.getElementById('section-title').textContent = labels[mod];
+  renderGrid();
+}
 
 function showTab(tab) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['home','progress'][i] === tab));
-  if(tab === 'home') { showScreen('home'); renderGrid(); }
+  if(tab==='home') showScreen('home');
   else { showScreen('progress'); renderProgress(); }
 }
+
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
 }
+
 function renderGrid() {
+  const passages = MODULES[state.currentModule].passages;
   const g = document.getElementById('passage-grid');
-  g.innerHTML = PASSAGES.map(p => {
+  g.innerHTML = passages.map(p => {
     const done = state.scores[p.id] !== undefined;
-    const pct = done ? Math.round((state.scores[p.id].correct / p.questions.length) * 100) : null;
-    return `<div class="passage-thumb genre-${p.genre.toLowerCase()}" onclick="startPassage(${p.id})">
+    const pct = done ? Math.round((state.scores[p.id].correct / p.questions.length)*100) : null;
+    const gc = p.module==='kazakh'?'genre-kazakh':p.module==='math'?'genre-math':'genre-'+p.genre.toLowerCase();
+    const bc = p.module==='kazakh'?'badge-kz':p.module==='math'?'badge-ma':'badge-en';
+    return `<div class="passage-thumb ${gc}" onclick="startPassage('${p.id}')">
       <div class="passage-meta" style="margin-bottom:8px;">
-        <span class="badge badge-genre">${p.genre}</span>
+        <span class="badge ${bc}">${p.genre}</span>
         <span class="badge badge-level">${p.level}</span>
-        ${done ? `<span class="badge" style="background:#e8f9f1;color:#1a4731;">${pct}%</span>` : ''}
+        ${done?`<span class="badge" style="background:#e8f9f1;color:#1a4731;">${pct}%</span>`:''}
       </div>
       <div class="thumb-title">${p.title}</div>
       <div class="thumb-preview">${p.text.substring(0,100)}...</div>
       <div class="thumb-footer">
-        <span class="thumb-stats"><span class="status-dot ${done?'done':''}"></span>${done ? 'Completed' : p.questions.length+' questions · '+Math.round(p.time/60)+' min'}</span>
+        <span class="thumb-stats"><span class="status-dot ${done?'done':''}"></span>${done?'Completed':p.questions.length+' questions · '+Math.round(p.time/60)+' min'}</span>
         <span style="font-size:18px;color:var(--primary);">→</span>
       </div>
     </div>`;
   }).join('');
 }
+
 function startPassage(id) {
-  const p = PASSAGES.find(x => x.id === id);
-  state.currentPassage = p; state.answers = {}; state.submitted = false;
-  state.secondsLeft = p.time; state.startTime = Date.now();
-  document.getElementById('passage-meta').innerHTML = `<span class="badge badge-genre">${p.genre}</span><span class="badge badge-level">${p.level}</span>`;
+  let p = null;
+  for(const m of Object.values(MODULES)) { p = m.passages.find(x => x.id===id); if(p) break; }
+  state.currentPassage=p; state.answers={}; state.submitted=false;
+  state.secondsLeft=p.time; state.startTime=Date.now();
+  const bc = p.module==='kazakh'?'badge-kz':p.module==='math'?'badge-ma':'badge-en';
+  document.getElementById('passage-meta').innerHTML = `<span class="badge ${bc}">${p.genre}</span><span class="badge badge-level">${p.level}</span>`;
   document.getElementById('passage-title').textContent = p.title;
-  document.getElementById('passage-body').innerHTML = p.text.split('\n\n').map(par => `<p style="margin-bottom:0.8em">${par}</p>`).join('');
+  document.getElementById('passage-body').innerHTML = p.text.split('\n\n').map(par=>`<p style="margin-bottom:0.8em">${par}</p>`).join('');
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').textContent = 'Submit Answers';
   renderQuestions(false); startTimer(); showScreen('practice');
 }
+
 function renderQuestions(showAnswers) {
   const p = state.currentPassage;
-  const c = document.getElementById('questions-container');
-  c.innerHTML = p.questions.map((q, qi) => {
-    const selected = state.answers[qi];
-    const letters = ['A','B','C','D'];
-    const opts = q.opts.map((o, oi) => {
+  const letters = ['A','B','C','D'];
+  document.getElementById('questions-container').innerHTML = p.questions.map((q,qi) => {
+    const sel = state.answers[qi];
+    const opts = q.opts.map((o,oi) => {
       let cls = 'option';
-      if(showAnswers) {
-        if(oi === q.ans) cls += ' reveal-correct';
-        else if(selected === oi && oi !== q.ans) cls += ' incorrect';
-      } else if(selected === oi) cls += ' selected';
-      return `<button class="${cls}" onclick="${showAnswers ? '' : `selectOpt(${qi},${oi})`}" ${showAnswers ? 'disabled' : ''}>
+      if(showAnswers){ if(oi===q.ans) cls+=' reveal-correct'; else if(sel===oi&&oi!==q.ans) cls+=' incorrect'; }
+      else if(sel===oi) cls+=' selected';
+      return `<button class="${cls}" onclick="${showAnswers?'':('selectOpt('+qi+','+oi+')')}" ${showAnswers?'disabled':''}>
         <span class="option-letter">${letters[oi]}</span>${o}
       </button>`;
     }).join('');
     return `<div class="question-card">
       <div class="question-text">${qi+1}. ${q.q}</div>
       <div class="options">${opts}</div>
-      ${showAnswers ? `<div class="explanation show">💡 ${q.exp}</div>` : ''}
+      ${showAnswers?`<div class="explanation show">💡 ${q.exp}</div>`:''}
     </div>`;
   }).join('');
 }
-function selectOpt(qi, oi) {
-  if(state.submitted) return;
-  state.answers[qi] = oi;
-  renderQuestions(false);
-}
+
+function selectOpt(qi,oi){ if(state.submitted) return; state.answers[qi]=oi; renderQuestions(false); }
+
 function startTimer() {
   clearInterval(state.timerInterval);
   updateTimerDisplay();
-  state.timerInterval = setInterval(() => {
-    state.secondsLeft--;
-    updateTimerDisplay();
-    if(state.secondsLeft <= 0) { clearInterval(state.timerInterval); submitQuiz(); }
-  }, 1000);
+  state.timerInterval = setInterval(()=>{ state.secondsLeft--; updateTimerDisplay(); if(state.secondsLeft<=0){clearInterval(state.timerInterval);submitQuiz();} },1000);
 }
+
 function updateTimerDisplay() {
-  const m = Math.floor(state.secondsLeft/60);
-  const s = state.secondsLeft % 60;
-  const el = document.getElementById('timer');
-  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-  el.classList.toggle('warning', state.secondsLeft <= 60);
+  const m=Math.floor(state.secondsLeft/60), s=state.secondsLeft%60;
+  const el=document.getElementById('timer');
+  el.textContent=m+':'+(s<10?'0':'')+s;
+  el.classList.toggle('warning',state.secondsLeft<=60);
 }
+
 function submitQuiz() {
   if(state.submitted) return;
-  state.submitted = true;
-  clearInterval(state.timerInterval);
-  const p = state.currentPassage;
-  let correct = 0;
-  p.questions.forEach((q,i) => { if(state.answers[i] === q.ans) correct++; });
-  const total = p.questions.length;
-  const pct = Math.round((correct/total)*100);
-  const elapsed = Math.round((Date.now()-state.startTime)/1000);
-  const pts = correct * 10;
-  state.scores[p.id] = { correct, total, elapsed };
-  state.totalPoints += pts;
-  document.getElementById('total-score').textContent = state.totalPoints;
-  document.getElementById('res-score').textContent = correct;
-  document.getElementById('res-total').textContent = '/'+total;
-  const labels = ['Keep Practicing','Good Effort!','Well Done!','Excellent!','Outstanding!'];
-  const msgs = ['Review the explanations and try again — you can do it!','You\'re on the right track. Review the passages carefully.','Solid performance! A bit more focus and you\'ll ace it.','Great comprehension skills! Almost perfect.','Perfect score! You are fully exam-ready.'];
-  document.getElementById('res-label').textContent = labels[Math.min(correct,4)];
-  document.getElementById('res-msg').textContent = msgs[Math.min(correct,4)];
-  document.getElementById('res-time').textContent = Math.floor(elapsed/60)+'m '+elapsed%60+'s';
-  document.getElementById('res-pct').textContent = pct+'%';
-  document.getElementById('res-pts').textContent = '+'+pts;
+  state.submitted=true; clearInterval(state.timerInterval);
+  const p=state.currentPassage;
+  let correct=0;
+  p.questions.forEach((q,i)=>{ if(state.answers[i]===q.ans) correct++; });
+  const total=p.questions.length, pct=Math.round((correct/total)*100), elapsed=Math.round((Date.now()-state.startTime)/1000), pts=correct*10;
+  state.scores[p.id]={correct,total,elapsed,title:p.title,module:p.module};
+  state.totalPoints+=pts;
+  document.getElementById('total-score').textContent=state.totalPoints;
+  document.getElementById('res-score').textContent=correct;
+  document.getElementById('res-total').textContent='/'+total;
+  const labels=['Keep Practicing','Good Effort!','Well Done!','Excellent!','Outstanding!'];
+  const msgs=['Review the explanations and try again!','You\'re on the right track. Review carefully.','Solid performance! A bit more focus and you\'ll ace it.','Great skills! Almost perfect.','Perfect score! You are fully exam-ready.'];
+  document.getElementById('res-label').textContent=labels[Math.min(correct,4)];
+  document.getElementById('res-msg').textContent=msgs[Math.min(correct,4)];
+  document.getElementById('res-time').textContent=Math.floor(elapsed/60)+'m '+elapsed%60+'s';
+  document.getElementById('res-pct').textContent=pct+'%';
+  document.getElementById('res-pts').textContent='+'+pts;
   showScreen('results');
 }
+
 function reviewAnswers() {
   renderQuestions(true);
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('submit-btn').textContent = 'Submitted';
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('submit-btn').textContent='Submitted';
   showScreen('practice');
 }
+
 function goHome() {
   clearInterval(state.timerInterval);
-  showScreen('home');
-  document.querySelector('.tab').click();
-  renderGrid();
+  renderGrid(); showScreen('home');
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
 }
+
 function renderProgress() {
-  const c = document.getElementById('progress-container');
-  const done = PASSAGES.filter(p => state.scores[p.id]);
-  if(!done.length) {
-    c.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>No passages completed yet.<br>Go to <strong>Passages</strong> to start practicing!</p></div>`;
-    return;
-  }
-  c.innerHTML = `<div class="progress-grid">${done.map(p => {
-    const s = state.scores[p.id];
-    const pct = Math.round((s.correct/s.total)*100);
-    const color = pct>=80?'var(--success)':pct>=60?'var(--accent)':'var(--danger)';
+  const c=document.getElementById('progress-container');
+  const ids=Object.keys(state.scores);
+  if(!ids.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><p>No passages completed yet.<br>Go to <strong>Passages</strong> to start!</p></div>`; return; }
+  const mc={english:'#1565c0',kazakh:'#2e7d32',math:'#6a1b9a'};
+  c.innerHTML=`<div class="progress-grid">${ids.map(id=>{
+    const s=state.scores[id], pct=Math.round((s.correct/s.total)*100);
+    const color=pct>=80?'var(--success)':pct>=60?'var(--accent)':'var(--danger)';
     return `<div class="progress-item">
-      <div class="progress-score" style="color:${color}">${pct}%</div>
-      <div class="progress-name">${p.title.substring(0,28)}...</div>
+      <div style="font-size:11px;font-weight:600;color:${mc[s.module]||'var(--primary)'};text-transform:uppercase;margin-bottom:4px;">${s.module}</div>
+      <div style="font-size:24px;font-weight:700;color:${color}">${pct}%</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px;">${s.title.substring(0,26)}...</div>
       <div style="font-size:12px;color:var(--muted);margin-top:4px;">${s.correct}/${s.total} correct</div>
       <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%;background:${color}"></div></div>
     </div>`;
   }).join('')}</div>`;
 }
+
 renderGrid();
 </script>
 </body>
